@@ -1,6 +1,7 @@
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import authentication, permissions
 
 from .models import User
 from .serializers import UserSerializer
@@ -51,6 +52,8 @@ class LoginView(APIView):
 class UserView(APIView):
     def get(self, request):
         token = request.COOKIES.get('jwt')
+        # authentication_classes = [authentication.AllowAny]
+
 
         if not token:
             raise AuthenticationFailed('Unauthenticated')
