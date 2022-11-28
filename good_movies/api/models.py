@@ -12,3 +12,6 @@ class User(AbstractUser):
     date_joined = models.DateField(auto_now=True)
 
     REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.first_name
