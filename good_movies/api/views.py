@@ -1,7 +1,9 @@
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import authentication, permissions,viewsets
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+
 
 from .models import User
 from .serializers import UserSerializer
@@ -50,6 +52,7 @@ class LoginView(APIView):
 
 #userInfoView
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
