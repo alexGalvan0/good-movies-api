@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-vq*s9x2o2-_s8sa*r^b!=wq=+2h8yn-(2x_oe!9jkq-eo$=lc!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io','http://localhost:3000/*']
+CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io', 'http://localhost:3000/*']
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.gitpod\.io$",
@@ -37,12 +38,12 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000'
 ]
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,11 +55,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 
-    #needed
+    # needed
     'rest_framework',
     'corsheaders',
 
-    #apps
+    # apps
     'api',
 ]
 

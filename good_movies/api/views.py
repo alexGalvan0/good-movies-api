@@ -1,14 +1,13 @@
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import authentication, permissions
+from rest_framework import authentication, permissions,viewsets
 
 from .models import User
 from .serializers import UserSerializer
 
 import jwt
 import datetime
-
 
 class RegisterView(APIView):
     def post(self, request):
@@ -49,24 +48,15 @@ class LoginView(APIView):
         return response
 
 
-class UserView(APIView):
-    def get(self, request):
-        token = request.COOKIES.get('jwt')
-        # authentication_classes = [authentication.AllowAny]
+#userInfoView
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
-
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated')
-
-        user = User.objects.filter(id=payload['id']).first()
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-
+    def get_queryset(self):
+        queryset = self.queryset
+        query_set = queryset.filter(id = self.request.user.id)
+        return query_set
 
 class LogoutView(APIView):
     def post(self, request):
