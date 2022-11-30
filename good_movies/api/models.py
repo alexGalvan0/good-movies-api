@@ -19,15 +19,15 @@ class User(AbstractUser):
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     plot = models.TextField(max_length=1000)
-    cast = models.CharField(max_length=255)
+    cast = models.CharField(max_length=255, blank=True)
     poster = models.URLField()
     rated = models.CharField(max_length=10)
     director = models.CharField(max_length=255)
-    date_released = models.DateField()
-    roten_score = models.IntegerField()
+    date_released = models.CharField(max_length=255)
+    roten_score = models.CharField(max_length=10)
 
     #added
-    run_time = models.IntegerField()
+    run_time = models.CharField(max_length=255)
     imdbId = models.CharField(max_length=255, unique=True)
     year = models.IntegerField()
 

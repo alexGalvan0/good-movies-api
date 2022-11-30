@@ -77,3 +77,4 @@ class LogoutView(APIView):
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
