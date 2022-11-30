@@ -7,6 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import action, api_view
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
@@ -78,3 +79,12 @@ class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
+@api_view(['GET', 'POST', 'DELETE'])
+def addLikedList(request, imdbID, userId):
+    movie = Movie.objects.get(imdbId=imdbID)
+    user = User.objects.get(id=userId)
+
+    if request.method =='POST':
+        movie.likes.add(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
