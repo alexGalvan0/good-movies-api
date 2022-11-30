@@ -28,7 +28,7 @@ class Movie(models.Model):
 
     #added
     run_time = models.IntegerField()
-    imdbId = models.CharField(max_length=255)
+    imdbId = models.CharField(max_length=255, unique=True)
     year = models.IntegerField()
 
     #relationships

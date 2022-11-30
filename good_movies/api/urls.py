@@ -1,6 +1,15 @@
 from django.urls import path
-from .views import RegisterView, LoginView, UserViewSet, LogoutView
+from rest_framework import routers
 from rest_framework_simplejwt import views as jwt_views
+
+from . import views
+from .views import LoginView, LogoutView, RegisterView, UserViewSet
+
+router = routers.DefaultRouter()
+
+
+router.register(r'movie', views.MovieViewSet)
+
 
 urlpatterns = [
     path('token', jwt_views.TokenObtainPairView.as_view(),
