@@ -23,5 +23,5 @@ urlpatterns = [
 
 
     #custom
-    path('addLikedList/<int:userId>/<str:imdbID>/', views.addLikedList),
+    path('addLikedList/<int:userId>/<str:imdbId>/', views.addLikedList),
 ]
