@@ -80,11 +80,12 @@ class MovieViewSet(ModelViewSet):
     serializer_class = MovieSerializer
 
     @action(detail=True, methods=['GET'])
-    def getMoviesByUser(self,**kwargs):
+    def getMoviesByUser(self, **kwargs):
         id = 3
         movies = Movie.objects.filter(user_id__id=id)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 def addLikedList(request, userId, imdbId):
@@ -96,8 +97,20 @@ def addLikedList(request, userId, imdbId):
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
 
+
 @api_view(['GET', 'POST', 'DELETE'])
-def getUserLikedMovies(request,id):
-    movies = Movie.objects.filter(likes__id=id)
-    serializer = MovieSerializer(movies, many=True)
+def getUserLikedMovies(request, id):
+
+    if request.method == 'GET':
+        movies = Movie.objects.filter(likes__id=id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def deleteUserLikedMovie(request, id, movieId):
+    likedMovie = Movie.objects.filter(likes__id=id)
+    likedMovie.delete()
+    serializer = MovieSerializer(likedMovie, many=True)
+
     return Response(serializer.data)

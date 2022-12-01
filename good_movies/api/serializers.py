@@ -29,6 +29,7 @@ class MovieSerializer(serializers.ModelSerializer):
             'cast',
             'poster',
             'rated',
+            'likes',
             'director',
             'date_released',
             'imdbId',

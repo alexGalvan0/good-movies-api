@@ -32,11 +32,13 @@ CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io', 'http://localhost:3000/*']
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.gitpod\.io$",
     r"^https://.*\.github\.io$",
-    r"http://localhost:3000/*\."
+    r"http://localhost:3000/*\.",
+    "'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io'"
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io'
 ]
 
 REST_FRAMEWORK = {
