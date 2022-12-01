@@ -79,12 +79,25 @@ class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
+    @action(detail=True, methods=['GET'])
+    def getMoviesByUser(self,**kwargs):
+        id = 3
+        movies = Movie.objects.filter(user_id__id=id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+
 @api_view(['GET', 'POST', 'DELETE'])
-def addLikedList(request,userId, imdbId):
+def addLikedList(request, userId, imdbId):
     movie = Movie.objects.get(imdbId=imdbId)
     user = User.objects.get(id=userId)
 
-    if request.method =='POST':
+    if request.method == 'POST':
         movie.likes.add(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def getUserLikedMovies(request,id):
+    movies = Movie.objects.filter(likes__id=id)
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)

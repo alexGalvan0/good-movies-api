@@ -24,4 +24,5 @@ urlpatterns = [
 
     #custom
     path('addLikedList/<int:userId>/<str:imdbId>/', views.addLikedList),
+    path('getUserLikedMovies/<int:id>/', views.getUserLikedMovies),
 ]
