@@ -96,6 +96,11 @@ def addLikedList(request, userId, imdbId):
         movie.likes.add(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
+    
+    if request.method == 'DELETE':
+        movie.likes.remove(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -107,10 +112,10 @@ def getUserLikedMovies(request, id):
         return Response(serializer.data)
 
 
-@api_view(['DELETE'])
-def deleteUserLikedMovie(request, id, movieId):
-    likedMovie = Movie.objects.filter(likes__id=id)
-    likedMovie.delete()
-    serializer = MovieSerializer(likedMovie, many=True)
+# @api_view(['DELETE'])
+# def deleteUserLikedMovie(request, id, movieId):
+#     likedMovie = Movie.objects.filter(likes__id=id)
+#     likedMovie.delete()
+#     serializer = MovieSerializer(likedMovie, many=True)
 
-    return Response(serializer.data)
+#     return Response(serializer.data)
