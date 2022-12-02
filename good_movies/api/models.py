@@ -10,6 +10,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=255, null=False)
     # profile_picture = models.ImageField( blank=True)
     date_joined = models.DateField(auto_now=True)
+    following = models.ManyToManyField('User', related_name='user_following_list')
 
     REQUIRED_FIELDS = []
 
@@ -34,7 +35,7 @@ class Movie(models.Model):
     #relationships
     likes = models.ManyToManyField(User, related_name='user_movie_likes')
     watched = models.ManyToManyField(User, related_name='user_movie_watched')
-    watch_list = models.ManyToManyField(User, related_name='user_movue_watch_list')
+    watch_list = models.ManyToManyField(User, related_name='user_movie_watch_list')
 
     def __str__(self):
         return f'{self.title}({self.year})'
