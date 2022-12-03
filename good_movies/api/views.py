@@ -4,14 +4,14 @@ import jwt
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action, api_view
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
-from .serializers import MovieSerializer, UserSerializer,FollowSerializer
+from .serializers import MovieSerializer, UserSerializer, FollowSerializer
 
 
 class RegisterView(APIView):
@@ -120,13 +120,8 @@ def follow(request, userId, username):
 
     if request.method == 'GET':
         friends = User.following.through.objects.filter(from_user_id=userId)
-
-
         userSerializer = FollowSerializer(friends, many=True)
         return Response(userSerializer.data)
-
-
-
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -136,3 +131,10 @@ def getUserLikedMovies(request, id):
         movies = Movie.objects.filter(likes__id=id)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getUserByUsername(request, username):
+    user = User.objects.get(username=username)
+    userSerializer = UserSerializer(user)
+    return Response(userSerializer.data)
