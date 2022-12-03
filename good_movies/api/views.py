@@ -104,6 +104,23 @@ def addLikedList(request, userId, imdbId):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+def follow(request, userId, username):
+    following = User.objects.get(username=username)
+    follower = User.objects.get(id=userId)
+
+    if request.method == 'POST':
+        following.likes.add(follower)
+        movieSerializer = MovieSerializer(following)
+        return Response(movieSerializer.data)
+    
+    if request.method == 'DELETE':
+        movie.likes.remove(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
+
+
+
+@api_view(['GET', 'POST', 'DELETE'])
 def getUserLikedMovies(request, id):
 
     if request.method == 'GET':

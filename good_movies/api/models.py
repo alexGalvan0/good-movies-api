@@ -10,6 +10,8 @@ class User(AbstractUser):
     password = models.CharField(max_length=255, null=False)
     # profile_picture = models.ImageField( blank=True)
     date_joined = models.DateField(auto_now=True)
+    following = models.ManyToManyField('User', related_name='user_following_list')
+
 
     REQUIRED_FIELDS = []
 
