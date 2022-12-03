@@ -102,7 +102,7 @@ def addLikedList(request, userId, imdbId):
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
 
-
+ 
 @api_view(['GET', 'POST', 'DELETE'])
 def follow(request, userId, username):
     friend = User.objects.get(username=username)
