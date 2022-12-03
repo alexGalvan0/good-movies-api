@@ -4,14 +4,14 @@ import jwt
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action, api_view
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
-from .serializers import MovieSerializer, UserSerializer
+from .serializers import MovieSerializer, UserSerializer,FollowSerializer
 
 
 class RegisterView(APIView):
@@ -79,12 +79,12 @@ class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-    @action(detail=True, methods=['GET'])
-    def getMoviesByUser(self, **kwargs):
-        id = 3
-        movies = Movie.objects.filter(user_id__id=id)
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
+    # @action(detail=True, methods=['GET'])
+    # def getMoviesByUser(self, **kwargs):
+    #     id = 3
+    #     movies = Movie.objects.filter(user_id__id=id)
+    #     serializer = MovieSerializer(movies, many=True)
+    #     return Response(serializer.data)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -96,7 +96,7 @@ def addLikedList(request, userId, imdbId):
         movie.likes.add(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
-    
+
     if request.method == 'DELETE':
         movie.likes.remove(user)
         movieSerializer = MovieSerializer(movie)
@@ -105,18 +105,27 @@ def addLikedList(request, userId, imdbId):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def follow(request, userId, username):
-    following = User.objects.get(username=username)
-    follower = User.objects.get(id=userId)
+    friend = User.objects.get(username=username)
+    user = User.objects.get(id=userId)
 
     if request.method == 'POST':
-        following.likes.add(follower)
-        movieSerializer = MovieSerializer(following)
-        return Response(movieSerializer.data)
-    
+        user.following.add(friend)
+        userSerializer = UserSerializer(user)
+        return Response(userSerializer.data)
+
     if request.method == 'DELETE':
-        movie.likes.remove(user)
-        movieSerializer = MovieSerializer(movie)
-        return Response(movieSerializer.data)
+        user.following.remove(friend)
+        userSerializer = UserSerializer(user)
+        return Response(userSerializer.data)
+
+    if request.method == 'GET':
+        friends = User.following.through.objects.filter(from_user_id=userId)
+
+
+        userSerializer = FollowSerializer(friends, many=True)
+        return Response(userSerializer.data)
+
+
 
 
 
