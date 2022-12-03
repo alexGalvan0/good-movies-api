@@ -22,8 +22,9 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view()),
 
 
-    #custom
+    # custom
     path('addLikedList/<int:userId>/<str:imdbId>/', views.addLikedList),
     path('getUserLikedMovies/<int:id>/', views.getUserLikedMovies),
-#     path('deleteUserLikedMovie/<id>/<movieId>/',views.deleteUserLikedMovie)
+    path('getUserByUsername/<str:username>/', views.getUserByUsername),
+    #     path('deleteUserLikedMovie/<id>/<movieId>/',views.deleteUserLikedMovie)
 ]

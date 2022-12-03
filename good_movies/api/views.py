@@ -110,3 +110,9 @@ def getUserLikedMovies(request, id):
         movies = Movie.objects.filter(likes__id=id)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+
+@api_view(['GET'])
+def getUserByUsername(request, username):
+    user = User.objects.get(username=username)
+    userSerializer = UserSerializer(user)
+    return Response(userSerializer.data)
