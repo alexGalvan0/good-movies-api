@@ -26,5 +26,6 @@ urlpatterns = [
     path('addLikedList/<int:userId>/<str:imdbId>/', views.addLikedList),
     path('getUserLikedMovies/<int:id>/', views.getUserLikedMovies),
     path('getUserByUsername/<str:username>/', views.getUserByUsername),
+        path('follow/<int:userId>/<str:username>/', views.follow),
     #     path('deleteUserLikedMovie/<id>/<movieId>/',views.deleteUserLikedMovie)
 ]
