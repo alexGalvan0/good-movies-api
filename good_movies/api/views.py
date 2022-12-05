@@ -11,7 +11,7 @@ from rest_framework.decorators import action, api_view
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
-from .serializers import MovieSerializer, UserSerializer
+from .serializers import MovieSerializer, UserSerializer, FollowSerializer
 
 
 class RegisterView(APIView):
@@ -136,5 +136,7 @@ def follow(request, userId, username):
 
     if request.method == 'GET':
         friends = User.following.through.objects.filter(from_user_id=userId)
-        userSerializer = UserSerializer(friends, many=True)
+        userSerializer = FollowSerializer(friends, many=True)
         return Response(userSerializer.data)
+
+

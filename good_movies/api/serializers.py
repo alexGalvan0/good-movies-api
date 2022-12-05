@@ -5,7 +5,8 @@ from .models import User, Movie
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name','last_name', 'username', 'email', 'password']
+        fields = ['id', 'first_name', 'last_name',
+                  'username', 'email', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -17,6 +18,13 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','first_name']
+
 
 
 class MovieSerializer(serializers.ModelSerializer):
