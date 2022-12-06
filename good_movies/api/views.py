@@ -105,7 +105,7 @@ def addLikedList(request, userId, imdbId):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getUserLikedMovies(request, id):
     if request.method == 'GET':
         movies = Movie.objects.filter(likes__id=id)
@@ -114,7 +114,7 @@ def getUserLikedMovies(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getUserByUsername(request, username):
     user = User.objects.get(username=username)
     userSerializer = UserSerializer(user)
@@ -122,7 +122,7 @@ def getUserByUsername(request, username):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def follow(request, userId, username):
     friend = User.objects.get(username=username)
     user = User.objects.get(id=userId)
