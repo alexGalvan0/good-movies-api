@@ -88,7 +88,7 @@ class MovieViewSet(ModelViewSet):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def addLikedList(request, userId, imdbId):
     movie = Movie.objects.get(imdbId=imdbId)
     user = User.objects.get(id=userId)
