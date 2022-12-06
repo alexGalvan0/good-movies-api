@@ -135,8 +135,7 @@ def follow(request, userId, username):
         return Response(userSerializer.data)
 
     if request.method == 'GET':
-        friends = User.following.through.objects.filter(from_user_id=userId)
-        userSerializer = FollowSerializer(friends, many=True)
+        followers = User.objects.filter(user_following_list=userId)
+        userSerializer = UserSerializer(followers, many=True)
         return Response(userSerializer.data)
-
 
