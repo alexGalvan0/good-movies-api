@@ -7,7 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view,permission_classes
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
@@ -88,6 +88,7 @@ class MovieViewSet(ModelViewSet):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def addLikedList(request, userId, imdbId):
     movie = Movie.objects.get(imdbId=imdbId)
     user = User.objects.get(id=userId)
@@ -104,8 +105,8 @@ def addLikedList(request, userId, imdbId):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def getUserLikedMovies(request, id):
-
     if request.method == 'GET':
         movies = Movie.objects.filter(likes__id=id)
         serializer = MovieSerializer(movies, many=True)
@@ -113,6 +114,7 @@ def getUserLikedMovies(request, id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUserByUsername(request, username):
     user = User.objects.get(username=username)
     userSerializer = UserSerializer(user)
@@ -120,6 +122,7 @@ def getUserByUsername(request, username):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def follow(request, userId, username):
     friend = User.objects.get(username=username)
     user = User.objects.get(id=userId)
