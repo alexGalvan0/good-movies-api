@@ -79,12 +79,9 @@ class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-    @action(detail=True, methods=['GET'])
-    def getMoviesByUser(self, **kwargs):
-        id = 3
-        movies = Movie.objects.filter(user_id__id=id)
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
+class FollowingViewSets(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 @api_view(['GET', 'POST', 'DELETE'])

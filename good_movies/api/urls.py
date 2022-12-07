@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 
 # default  viewsets
 router.register(r'movies', views.MovieViewSet)
+router.register(r'following', views.FollowingViewSets)
 
 
 urlpatterns = [
