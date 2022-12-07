@@ -29,5 +29,7 @@ urlpatterns = [
     path('getUserByUsername/<str:username>/', views.getUserByUsername),
     path('follow/<int:userId>/<str:username>/', views.follow),
 
-    path('addWatchedList/<int:userId>/<str:imdbId>/',views.addWatchedList),
+     path('addWatchedList/<int:userId>/<str:imdbId>/',views.addWatchedList),
+     path('getUserWatchedMovies/<int:id>/',views.getUserWatchedMovies),
+
 ]
