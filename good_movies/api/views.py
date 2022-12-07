@@ -100,6 +100,22 @@ def addLikedList(request, userId, imdbId):
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
 
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def addWatchedList(request, userId, imdbId):
+    movie = Movie.objects.get(imdbId=imdbId)
+    user = User.objects.get(id=userId)
+
+    if request.method == 'POST':
+        movie.watched.add(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
+
+    if request.method == 'DELETE':
+        movie.watched.remove(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
@@ -109,6 +125,14 @@ def getUserLikedMovies(request, id):
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
 
+#####WATCHED
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def getUserWatchedMovies(request, id):
+    if request.method == 'GET':
+        movies = Movie.objects.filter(watched__id=id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
