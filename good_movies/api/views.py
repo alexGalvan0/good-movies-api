@@ -7,11 +7,11 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view,permission_classes
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User
-from .serializers import MovieSerializer, UserSerializer
+from .serializers import MovieSerializer, UserSerializer, FollowSerializer
 
 
 class RegisterView(APIView):
@@ -79,15 +79,13 @@ class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-    @action(detail=True, methods=['GET'])
-    def getMoviesByUser(self, **kwargs):
-        id = 3
-        movies = Movie.objects.filter(user_id__id=id)
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
+class FollowingViewSets(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-
+###LIKED
 @api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
 def addLikedList(request, userId, imdbId):
     movie = Movie.objects.get(imdbId=imdbId)
     user = User.objects.get(id=userId)
@@ -96,17 +94,75 @@ def addLikedList(request, userId, imdbId):
         movie.likes.add(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
-    
+
     if request.method == 'DELETE':
         movie.likes.remove(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
-
-
 @api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
 def getUserLikedMovies(request, id):
-
     if request.method == 'GET':
         movies = Movie.objects.filter(likes__id=id)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+
+
+###WATCHED
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def addWatchedList(request, userId, imdbId):
+    movie = Movie.objects.get(imdbId=imdbId)
+    user = User.objects.get(id=userId)
+
+    if request.method == 'POST':
+        movie.watched.add(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
+
+    if request.method == 'DELETE':
+        movie.watched.remove(user)
+        movieSerializer = MovieSerializer(movie)
+        return Response(movieSerializer.data)
+
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def getUserWatchedMovies(request, id):
+    if request.method == 'GET':
+        movies = Movie.objects.filter(watched__id=id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+
+
+
+
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def getUserByUsername(request, username):
+    user = User.objects.get(username=username)
+    userSerializer = UserSerializer(user)
+    return Response(userSerializer.data)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def follow(request, userId, username):
+    friend = User.objects.get(username=username)
+    user = User.objects.get(id=userId)
+
+    if request.method == 'POST':
+        user.following.add(friend)
+        userSerializer = UserSerializer(user)
+        return Response(userSerializer.data)
+
+    if request.method == 'DELETE':
+        user.following.remove(friend)
+        userSerializer = UserSerializer(user)
+        return Response(userSerializer.data)
+
+    if request.method == 'GET':
+        followers = User.objects.filter(user_following_list=userId)
+        userSerializer = UserSerializer(followers, many=True)
+        return Response(userSerializer.data)
+

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+
 class User(AbstractUser):
     first_name = models.CharField(max_length=255, blank=True, null=False)
     last_name = models.CharField(max_length=255, blank=True, null=False)
@@ -10,11 +12,14 @@ class User(AbstractUser):
     password = models.CharField(max_length=255, null=False)
     # profile_picture = models.ImageField( blank=True)
     date_joined = models.DateField(auto_now=True)
+    following = models.ManyToManyField(
+        'User', related_name='user_following_list')
 
     REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.first_name
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -26,15 +31,16 @@ class Movie(models.Model):
     date_released = models.CharField(max_length=255)
     roten_score = models.CharField(max_length=10)
 
-    #added
+    # added
     run_time = models.CharField(max_length=255)
     imdbId = models.CharField(max_length=255, unique=True)
     year = models.IntegerField()
 
-    #relationships
+    # relationships
     likes = models.ManyToManyField(User, related_name='user_movie_likes')
     watched = models.ManyToManyField(User, related_name='user_movie_watched')
-    watch_list = models.ManyToManyField(User, related_name='user_movue_watch_list')
+    watch_list = models.ManyToManyField(
+        User, related_name='user_movue_watch_list')
 
     def __str__(self):
         return f'{self.title}({self.year})'

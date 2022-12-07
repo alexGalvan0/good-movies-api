@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 
 # default  viewsets
 router.register(r'movies', views.MovieViewSet)
+router.register(r'following', views.FollowingViewSets)
 
 
 urlpatterns = [
@@ -22,8 +23,13 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view()),
 
 
-    #custom
+    # custom
     path('addLikedList/<int:userId>/<str:imdbId>/', views.addLikedList),
     path('getUserLikedMovies/<int:id>/', views.getUserLikedMovies),
-#     path('deleteUserLikedMovie/<id>/<movieId>/',views.deleteUserLikedMovie)
+    path('getUserByUsername/<str:username>/', views.getUserByUsername),
+    path('follow/<int:userId>/<str:username>/', views.follow),
+
+     path('addWatchedList/<int:userId>/<str:imdbId>/',views.addWatchedList),
+     path('getUserWatchedMovies/<int:id>/',views.getUserWatchedMovies),
+
 ]
