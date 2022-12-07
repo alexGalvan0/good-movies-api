@@ -28,12 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io', 'http://localhost:3000/*']
-
+CORS_ORIGIN_ALLOW_ALL =True
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.gitpod\.io$",
     r"^https://.*\.github\.io$",
-    r"http://localhost:3000/*\.",
-    "'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io'"
+    r"http://localhost:3000/*\.",  
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
@@ -48,7 +47,7 @@ REST_FRAMEWORK = {
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1), #change to 5 min when in production
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
