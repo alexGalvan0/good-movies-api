@@ -37,7 +37,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io'
+    'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io',
+    'https://good-movies-client.vercel.app'
 ]
 
 REST_FRAMEWORK = {
@@ -163,6 +164,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "galvan.alex121@gmail.com"
+EMAIL_HOST_PASSWORD = "$Mile103020"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -172,3 +181,5 @@ AUTH_USER_MODEL = 'api.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+

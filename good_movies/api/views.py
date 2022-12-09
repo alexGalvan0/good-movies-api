@@ -1,5 +1,6 @@
 import datetime
-import smtplib
+from django.core.mail import send_mail
+from django.conf import settings
 import jwt
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
@@ -154,12 +155,12 @@ def follow(request, userId, username):
     friend = User.objects.get(username=username)
     user = User.objects.get(id=userId)
 
-
-
     if request.method == 'POST':
+        
         user.following.add(friend)
         userSerializer = UserSerializer(user)
         return Response(userSerializer.data)
+        
 
     if request.method == 'DELETE':
         user.following.remove(friend)
