@@ -37,7 +37,9 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://3000-alexgalvan0-goodfoodscl-wwkzyei5zva.ws-us77.gitpod.io'
+    'https://3000-alexgalvan0-goodmoviesc-9ajtf2a05gn.ws-us78.gitpod.io',
+    'https://good-movies-client-r3diaa9uw-alexgalvan0.vercel.app',
+    'https://3000-alexgalvan0-goodmoviesc-9ajtf2a05gn.ws-us78.gitpod.io'
 ]
 
 REST_FRAMEWORK = {
