@@ -91,7 +91,17 @@ class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
 
+
+
 # LIKED
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def getMovieByImdbID(request, imdbId):
+    movie = Movie.objects.get(imdbId=imdbId)
+    if request.method == 'GET':
+        movieSerializer = MovieSerializer(movie)
+        return Response(movie.imdbId)
+
 
 
 @api_view(['GET', 'POST', 'DELETE'])
