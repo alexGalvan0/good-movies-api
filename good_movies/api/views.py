@@ -1,7 +1,7 @@
 import datetime
 
 import jwt
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
@@ -9,9 +9,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from django.core.mail import send_mail
+
 from .models import Movie, User
-from .serializers import FollowSerializer, MovieSerializer, UserSerializer
+from .serializers import (FollowSerializer, MovieSerializer, ReviewSerializer,
+                          UserSerializer)
 
 
 class RegisterView(APIView):
@@ -74,15 +75,21 @@ class LogoutView(APIView):
         }
         return response
 
-
+#Movies
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-
+#Following
 class FollowingViewSets(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+# REVIEWS
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
 
 # LIKED
 
@@ -154,12 +161,10 @@ def follow(request, userId, username):
     friend = User.objects.get(username=username)
     user = User.objects.get(id=userId)
 
-
     if request.method == 'POST':
         user.following.add(friend)
         userSerializer = UserSerializer(user)
         return Response(userSerializer.data)
-
 
     if request.method == 'DELETE':
         user.following.remove(friend)
@@ -182,3 +187,5 @@ def followers(request, userId):
         followers = User.objects.filter(user_following_list=userId)
         userSerializer = UserSerializer(followers, many=True)
         return Response(userSerializer.data)
+
+
