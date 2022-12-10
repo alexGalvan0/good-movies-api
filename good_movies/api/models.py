@@ -44,3 +44,12 @@ class Movie(models.Model):
 
     def __str__(self):
         return f'{self.title}({self.year})'
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_movie_review')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE,related_name='movie_reviews')
+    review = models.TextField(max_length=1000)
+
+    def __str__(self):
+        return f'{self.movie.title}({self.user.first_name})'
