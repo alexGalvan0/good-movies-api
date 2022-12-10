@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Movie, User
+from .models import Movie, User, Review
 from .serializers import (FollowSerializer, MovieSerializer, ReviewSerializer,
                           UserSerializer)
 
