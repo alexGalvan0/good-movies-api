@@ -34,4 +34,6 @@ urlpatterns = [
      path('getUserWatchedMovies/<int:id>/',views.getUserWatchedMovies),
 
      path('getMovieByImdbID/<str:imdbId>/', views.getMovieByImdbID),
+     path('getReviewByMovieId/<int:id>/',views.getReviewsByMovieId)
+  
 ]

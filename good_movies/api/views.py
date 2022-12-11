@@ -75,12 +75,16 @@ class LogoutView(APIView):
         }
         return response
 
-#Movies
+# Movies
+
+
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-#Following
+# Following
+
+
 class FollowingViewSets(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -91,19 +95,28 @@ class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
 
-
-
-# LIKED
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def getMovieByImdbID(request, imdbId):
     movie = Movie.objects.get(imdbId=imdbId)
     if request.method == 'GET':
         movieSerializer = MovieSerializer(movie)
-        return Response(movie.imdbId)
+        return Response(movie.id)
+
+# getReviewa
+
+@api_view(['GET'])
+def getReviewsByMovieId(request, id):
+    review = Review.objects.filter(movie=id)
+    reviewSerializer = ReviewSerializer(review,many=True)
+    return Response(reviewSerializer.data)
 
 
 
+
+
+
+# LIKE
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def addLikedList(request, userId, imdbId):
@@ -197,5 +210,3 @@ def followers(request, userId):
         followers = User.objects.filter(user_following_list=userId)
         userSerializer = UserSerializer(followers, many=True)
         return Response(userSerializer.data)
-
-
