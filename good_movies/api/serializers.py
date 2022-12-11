@@ -23,8 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','first_name']
-
+        fields = ['id', 'first_name']
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -44,8 +43,9 @@ class MovieSerializer(serializers.ModelSerializer):
             'run_time',
         ]
 
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
 
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
         model = Review
-        fields = ('__all__')
+        fields = ['user', 'movie', 'review']
