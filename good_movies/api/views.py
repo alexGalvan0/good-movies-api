@@ -1,17 +1,18 @@
 import datetime
 
 import jwt
+from django.core.mail import EmailMessage, send_mail
 from rest_framework import viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import action, api_view,permission_classes
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Movie, User
-from .serializers import MovieSerializer, UserSerializer, FollowSerializer
+from .models import Movie, User, Review
+from .serializers import (FollowSerializer, MovieSerializer, ReviewSerializer,
+                          UserSerializer,SimpleReviewSerializer)
 
 
 class RegisterView(APIView):
@@ -74,16 +75,49 @@ class LogoutView(APIView):
         }
         return response
 
+# Movies
+
 
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
+# Following
+
+
 class FollowingViewSets(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-###LIKED
+# REVIEWS
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = SimpleReviewSerializer
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def getMovieByImdbID(request, imdbId):
+    movie = Movie.objects.get(imdbId=imdbId)
+    if request.method == 'GET':
+        movieSerializer = MovieSerializer(movie)
+        return Response(movie.id)
+
+# getReviewa
+
+@api_view(['GET'])
+def getReviewsByMovieId(request, imdbid):
+    review = Review.objects.filter(movie__imdbId = imdbid)
+
+    reviewSerializer = ReviewSerializer(review,many=True)
+    return Response(reviewSerializer.data)
+
+
+
+
+
+
+# LIKE
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def addLikedList(request, userId, imdbId):
@@ -99,6 +133,8 @@ def addLikedList(request, userId, imdbId):
         movie.likes.remove(user)
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
+
+
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def getUserLikedMovies(request, id):
@@ -108,7 +144,7 @@ def getUserLikedMovies(request, id):
         return Response(serializer.data)
 
 
-###WATCHED
+# WATCHED
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def addWatchedList(request, userId, imdbId):
@@ -125,6 +161,7 @@ def addWatchedList(request, userId, imdbId):
         movieSerializer = MovieSerializer(movie)
         return Response(movieSerializer.data)
 
+
 @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([IsAuthenticated])
 def getUserWatchedMovies(request, id):
@@ -132,9 +169,6 @@ def getUserWatchedMovies(request, id):
         movies = Movie.objects.filter(watched__id=id)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
-
-
-
 
 
 @api_view(['GET'])
@@ -166,3 +200,14 @@ def follow(request, userId, username):
         userSerializer = UserSerializer(followers, many=True)
         return Response(userSerializer.data)
 
+
+@api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+def followers(request, userId):
+    friend = User.objects.get(username=username)
+    user = User.objects.get(id=userId)
+
+    if request.method == 'GET':
+        followers = User.objects.filter(user_following_list=userId)
+        userSerializer = UserSerializer(followers, many=True)
+        return Response(userSerializer.data)
