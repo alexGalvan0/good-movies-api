@@ -106,8 +106,9 @@ def getMovieByImdbID(request, imdbId):
 # getReviewa
 
 @api_view(['GET'])
-def getReviewsByMovieId(request, id):
-    review = Review.objects.filter(movie=id)
+def getReviewsByMovieId(request, imdbid):
+    review = Review.objects.filter(movie__imdbId = imdbid)
+
     reviewSerializer = ReviewSerializer(review,many=True)
     return Response(reviewSerializer.data)
 
