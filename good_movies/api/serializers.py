@@ -50,3 +50,8 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['user', 'movie', 'review']
+
+class SimpleReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('__all__')

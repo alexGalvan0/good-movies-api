@@ -12,7 +12,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Movie, User, Review
 from .serializers import (FollowSerializer, MovieSerializer, ReviewSerializer,
-                          UserSerializer)
+                          UserSerializer,SimpleReviewSerializer)
 
 
 class RegisterView(APIView):
@@ -92,7 +92,7 @@ class FollowingViewSets(ModelViewSet):
 # REVIEWS
 class ReviewViewSet(ModelViewSet):
     queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
+    serializer_class = SimpleReviewSerializer
 
 
 @api_view(['GET', 'POST', 'DELETE'])
